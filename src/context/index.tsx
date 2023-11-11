@@ -11,8 +11,9 @@ const GlobalContextProvider = ({ children }: ProviderChildrenType) => {
 
     const [socket, setSocket] = useState<any>(null);
     const [gameState, setGameState] = useState(null);
+    const [PlayerName, setPlayerName] = useState<string | null>(null)
 
-    const data = { socket, gameState, setGameState }
+    const data = { socket, gameState, setGameState, PlayerName, setPlayerName }
 
     useEffect(() => {
         // Connect to the Socket.io server

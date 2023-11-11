@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { BlurryBackgroundBox } from "../../components/BlurryBackgroundBox"
 import { RoomCard } from "../../components/RoomCard"
 import { BackgroundCanvas } from "../../components/canvas"
@@ -9,8 +9,7 @@ import { useNavigate } from "react-router-dom"
 export const Home = () => {
 
     const { BgCanvasRef } = HomeBackgroundAnimation()
-    const { gameState, socket, setGameState } = useContext(GlobalContext)
-    const [PlayerName, setPlayerName] = useState<string | null>(null)
+    const { gameState, socket, setGameState, PlayerName, setPlayerName } = useContext(GlobalContext)
     const Navigate = useNavigate()
 
     useEffect(() => {
@@ -20,7 +19,6 @@ export const Home = () => {
         // Handle server events
         socket.on('gameState', (gameState: any) => {
             setGameState(gameState);
-            console.log(gameState)
         });
     }, [socket])
 
@@ -35,7 +33,7 @@ export const Home = () => {
 
                     {gameState ? gameState.rooms.map((e: any, i: number) => {
                         return <RoomCard key={i} roomName={e.name} roomPlayers={e.players} onClick={() => {
-                            socket.emit('join', { PlayerName, i })
+                            socket.emit('join', { PlayerName: PlayerName, room: i })
                             Navigate("/game")
                         }} />
                     })

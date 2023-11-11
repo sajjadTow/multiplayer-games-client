@@ -66,7 +66,7 @@ export const GameBehavior = () => {
         BulletsCanvasRef.current.width = CanvasWidth
         BulletsCanvasRef.current.height = CanvasHeight
 
-        const Background = new BackgroundAnimate(5, BgCtx)
+        const Background = new BackgroundAnimate(2, BgCtx)
         let Player = new Character(PlayerCtx, 0, 0, idle, false, 15, socket.id)
         let EnemyPlayer = new Character(PlayerCtx, 0, 0, idle, false, 15, "")
 
@@ -77,12 +77,15 @@ export const GameBehavior = () => {
         //for player attack
         document.addEventListener("click", handleMouseClick)
 
+
+
         socket.on('playerCoordinates', ({ playerId, x, y, direction }: any) => {
             if (playerId !== socket.id) {
                 // Store the other player's coordinates
                 EnemyPlayer = new Character(PlayerCtx, x, y, direction == "left" ? idle_rev : idle, false, 15, playerId)
             }
         });
+
 
         // attack
         socket.on('magicBullets', ({ playerId, x, y, direction }: any) => {
@@ -94,14 +97,14 @@ export const GameBehavior = () => {
         });
 
 
-        /*    socket.on('winnerPlayer', (winnerPlayerId: string) => {
-               if (winnerPlayerId == socket.id) {
-                   Navigate("/win")
-               } else {
-                   Navigate("/lose")
-               }
-           });
-    */
+        socket.on('winnerPlayer', (winnerPlayerId: string) => {
+            if (winnerPlayerId == socket.id) {
+                Navigate("/win")
+            } else {
+                Navigate("/lose")
+            }
+        });
+
 
 
         // animate function
